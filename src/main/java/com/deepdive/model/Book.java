@@ -20,13 +20,11 @@ public class Book extends MediaContent {
 
     @Override
     public String getFormattedInfo() {
-        StringBuilder info = new StringBuilder();
-        info.append(getType().getDescription()).append(": ")
-                .append(getTitle()).append(", ")
-                .append(author).append(" (")
-                .append(getYear()).append("), ")
-                .append(totalPages).append(" стр.");
-        return info.toString();
+        return getType().getDescription() + ": " +
+                getTitle() + ", " +
+                author + " (" +
+                getYear() + "), " +
+                totalPages + " стр.";
     }
 
     @Override
