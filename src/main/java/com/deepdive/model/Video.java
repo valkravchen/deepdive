@@ -54,6 +54,9 @@ public class Video extends MediaContent {
     }
 
     public void setDurationMinutes(int durationMinutes) {
+        if (durationMinutes < 0) {
+            throw new IllegalArgumentException("Продолжительность не может быть отрицательной");
+        }
         this.durationMinutes = durationMinutes;
     }
 
@@ -102,6 +105,12 @@ public class Video extends MediaContent {
     }
 
     public void setEpisodesWatched(int episodesWatched) {
+        if (episodesWatched < 0) {
+            throw new IllegalArgumentException("Количество просмотренных эпизодов не может быть отрицательным");
+        }
+        if (episodesWatched > episodesTotal) {
+            throw new IllegalArgumentException("Нельзя посмотреть больше эпизодов, чем есть всего");
+        }
         this.episodesWatched = episodesWatched;
     }
 }
