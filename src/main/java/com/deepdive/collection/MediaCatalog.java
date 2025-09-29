@@ -189,7 +189,7 @@ public class MediaCatalog {
 
     // Поиск позиции элемента
     public int getPosition(MediaContent media) {
-        return  catalog.indexOf(media);
+        return catalog.indexOf(media);
     }
 
     // Поиск последней позиции по названию (может быть несколько с одним названием)
@@ -197,7 +197,7 @@ public class MediaCatalog {
         if (title == null) {
             return -1;  // или можно искать null элементы
         }
-        for (int i = catalog.size() - 1; i >= 0 ; i--) {
+        for (int i = catalog.size() - 1; i >= 0; i--) {
             if (catalog.get(i) != null && title.equals(catalog.get(i).getTitle())) {
                 return i;
             }
@@ -211,6 +211,71 @@ public class MediaCatalog {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + catalog.size());
         }
     }
+
+    // Перемещение элемента вверх (к началу списка)
+    public boolean moveUp(int index) {
+        if (index <= 0 || index >= catalog.size()) {
+            return false;
+        }
+        MediaContent element = catalog.get(index);
+        catalog.remove(index);
+        catalog.add(index - 1, element);
+        return true;
+    }
+
+    // Перемещение элемента вниз (к концу списка)
+    public boolean moveDown(int index) {
+        if (index < 0 || index >= catalog.size() - 1) {
+            return false;
+        }
+        MediaContent element = catalog.get(index);
+        catalog.remove(index);
+        catalog.add(index + 1, element);
+        return true;
+    }
+
+    // Обмен местами двух элементов
+    public void swap(int index1, int index2) {
+        if (index1 < 0 || index1 >= catalog.size() ||
+                index2 < 0 || index2 >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректные индексы");
+        }
+        if (index1 == index2) {
+            return; // Ничего не делаем
+        }
+
+        MediaContent element1 = catalog.get(index1);
+        MediaContent element2 = catalog.get(index2);
+        catalog.set(index1, element2);
+        catalog.set(index2, element1);
+    }
+
+    // Перемещение в начало
+    public void moveToTop(int index) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        if (index == 0) {
+            return; // Уже наверху
+        }
+        MediaContent element = catalog.get(index);
+        catalog.remove(index);
+        catalog.add(0, element);
+    }
+
+    // Перемещение в конец
+    public void moveToBottom(int index) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        if (index == catalog.size() - 1) {
+            return; // Уже внизу
+        }
+        MediaContent element = catalog.get(index);
+        catalog.remove(index);
+        catalog.add(element); // В конец
+    }
 }
+
 
 

@@ -43,5 +43,31 @@ public class TestMediaCatalog {
         System.out.println();
         catalog.printCatalog();
         System.out.println("\n✓ Тест MediaCatalog пройден!");
+        System.out.println("\n=== Тест управления порядком ===");
+        catalog = new MediaCatalog();
+        catalog.addMedia(new Book("A", "Автор", 2020));
+        catalog.addMedia(new Book("B", "Автор", 2021));
+        catalog.addMedia(new Book("C", "Автор", 2022));
+        catalog.addMedia(new Book("D", "Автор", 2023));
+        System.out.println("Исходный порядок:");
+        for (int i = 0; i < 4; i++) {
+            System.out.print(catalog.getByPosition(i).getTitle() + " ");
+        }
+        catalog.moveUp(2);  // C вверх
+        System.out.println("\nПосле moveUp(2):");
+        for (int i = 0; i < 4; i++) {
+            System.out.print(catalog.getByPosition(i).getTitle() + " ");
+        }
+        catalog.swap(0, 3);
+        System.out.println("\nПосле swap(0, 3):");
+        for (int i = 0; i < 4; i++) {
+            System.out.print(catalog.getByPosition(i).getTitle() + " ");
+        }
+        catalog.moveToTop(2);
+        System.out.println("\nПосле moveToTop(2):");
+        for (int i = 0; i < 4; i++) {
+            System.out.print(catalog.getByPosition(i).getTitle() + " ");
+        }
+        System.out.println("\n✓ Управление порядком работает!");
     }
 }
