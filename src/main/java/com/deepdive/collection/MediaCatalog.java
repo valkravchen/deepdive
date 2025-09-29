@@ -146,4 +146,71 @@ public class MediaCatalog {
     public List<MediaContent> getAllMedia() {
         return new ArrayList<>(catalog); // заглушка
     }
+
+    // Получение элемента по позиции
+    public MediaContent getByPosition(int index) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        return catalog.get(index);
+    }
+
+    // Замена элемента по позиции
+    public MediaContent replaceAt(int index, MediaContent newMedia) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        if (newMedia == null) {
+            throw new IllegalArgumentException("MediaContent не может быть null");
+        }
+        return catalog.set(index, newMedia);
+    }
+
+    // Вставка элемента в конкретную позицию
+    public void insertAt(int index, MediaContent media) {
+        if (index < 0 || index > catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        if (media == null) {
+            throw new IllegalArgumentException("MediaContent не может быть null");
+        }
+        catalog.add(index, media);
+        totalItems++;
+    }
+
+    // Удаление по позиции
+    public MediaContent removeAt(int index) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Некорректный индекс");
+        }
+        totalItems--;
+        return catalog.remove(index);
+    }
+
+    // Поиск позиции элемента
+    public int getPosition(MediaContent media) {
+        return  catalog.indexOf(media);
+    }
+
+    // Поиск последней позиции по названию (может быть несколько с одним названием)
+    public int getLastPositionByTitle(String title) {
+        if (title == null) {
+            return -1;  // или можно искать null элементы
+        }
+        for (int i = catalog.size() - 1; i >= 0 ; i--) {
+            if (catalog.get(i) != null && title.equals(catalog.get(i).getTitle())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Проверка валидности индекса
+    private void checkIndex(int index) {
+        if (index < 0 || index >= catalog.size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + catalog.size());
+        }
+    }
 }
+
+
