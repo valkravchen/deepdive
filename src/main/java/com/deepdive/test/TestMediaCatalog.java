@@ -69,5 +69,33 @@ public class TestMediaCatalog {
             System.out.print(catalog.getByPosition(i).getTitle() + " ");
         }
         System.out.println("\n✓ Управление порядком работает!");
+        System.out.println("\n=== Тест пагинации ===");
+
+// Создаем каталог с 15 элементами
+        catalog = new MediaCatalog();
+        for (int i = 1; i <= 15; i++) {
+            catalog.addMedia(new Book("Книга " + i, "Автор", 2000 + i));
+        }
+
+// Тест getPage
+        List<MediaContent> page1 = catalog.getPage(0, 5);
+        System.out.println("Страница 0 (размер 5): " + page1.size() + " элементов");
+
+        List<MediaContent> page2 = catalog.getPage(1, 5);
+        System.out.println("Страница 1: " + page2.get(0).getTitle());
+
+// Тест getTotalPages
+        System.out.println("Всего страниц (по 5): " + catalog.getTotalPages(5));
+        System.out.println("Всего страниц (по 7): " + catalog.getTotalPages(7));
+
+// Тест printPage
+        System.out.println();
+        catalog.printPage(1, 5);
+
+// Тест пустой страницы
+        catalog.printPage(5, 5);
+
+        System.out.println("\n✓ Пагинация работает!");
+
     }
 }

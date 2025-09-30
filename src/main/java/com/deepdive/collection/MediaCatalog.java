@@ -275,6 +275,68 @@ public class MediaCatalog {
         catalog.remove(index);
         catalog.add(element); // В конец
     }
+
+    // Получение страницы каталога
+    public List<MediaContent> getPage(int pageNumber, int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Размер страницы должен быть > 0");
+        }
+        if (pageNumber < 0) {
+            throw new IllegalArgumentException("Номер страницы не может быть отрицательным");
+        }
+        int from = pageNumber * pageSize;
+        if (from >= catalog.size()) {
+            return new ArrayList<>();
+        }
+        int to = Math.min(from + pageSize, catalog.size());
+        return new ArrayList<>(catalog.subList(from, to));
+    }
+
+    // Общее количество страниц
+    public int getTotalPages(int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Размер страницы должен быть > 0");
+        }
+        return (catalog.size() + pageSize - 1) / pageSize;
+    }
+
+    // Информация о странице
+    public String getPageInfo(int pageNumber, int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Размер страницы должен быть > 0");
+        }
+        if (pageNumber < 0) {
+            throw new IllegalArgumentException("Номер страницы не может быть отрицательным");
+        }
+        int totalPages = getTotalPages(pageSize);
+        int totalElements = catalog.size();
+        int startElement = pageNumber * pageSize + 1;
+        int endElement = Math.min(startElement + pageSize - 1, totalElements);
+        return "Страница " + (pageNumber + 1) + " из " + totalPages +
+                " (элементы " + startElement + "-" + endElement + " из " + totalElements + ")";
+    }
+
+
+    public void printPage(int pageNumber, int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Размер страницы должен быть > 0");
+        }
+        if (pageNumber < 0) {
+            throw new IllegalArgumentException("Номер страницы не может быть отрицательным");
+        }
+        System.out.println(getPageInfo(pageNumber, pageSize));
+        System.out.println("-".repeat(40));
+        List<MediaContent> page = getPage(pageNumber, pageSize);
+        int startNum = pageNumber * pageSize + 1;
+        if (page.isEmpty()) {
+            System.out.println("Страница пуста");
+        } else {
+            for (int i = 0; i < page.size(); i++) {
+                System.out.println((startNum + i) + ". " + page.get(i).getTitle() + " (" +
+                        page.get(i).getYear() + ") - " + page.get(i).getType());
+            }
+        }
+    }
 }
 
 
