@@ -337,6 +337,20 @@ public class MediaCatalog {
             }
         }
     }
+
+    // Поиск и замена всех элементов по условию
+    public int replaceAll(String oldTitle, String newTitle) {
+        ListIterator<MediaContent> iter = catalog.listIterator();
+        int count = 0;
+        while (iter.hasNext()) {
+            MediaContent media = iter.next();
+            if (media.getTitle().equals(oldTitle)) {
+                media.setTitle(newTitle);
+                count++;
+            }
+        }
+        return count; // заглушка
+    }
 }
 
 
