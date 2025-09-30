@@ -3,6 +3,7 @@ package com.deepdive.collection;
 import com.deepdive.model.MediaContent;
 import com.deepdive.model.enums.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class MediaCatalog {
@@ -351,7 +352,35 @@ public class MediaCatalog {
         }
         return count; // заглушка
     }
+
+    public void removeRange(int fromIndex, int toIndex) {
+        if (fromIndex >= 0 && toIndex <= catalog.size() && fromIndex < toIndex) {
+            catalog.subList(fromIndex, toIndex).clear();
+            totalItems -= (toIndex - fromIndex);
+        }
+    }
+
+    // Извлечение диапазона (с удалением из каталога)
+    public List<MediaContent> extractRange(int fromIndex, int toIndex) {
+        if (fromIndex >= 0 && toIndex <= catalog.size()) {
+            List<MediaContent> extracted = new ArrayList<>(catalog.subList(fromIndex, toIndex));
+            catalog.subList(fromIndex, toIndex).clear();
+            totalItems -= (toIndex - fromIndex);
+            return extracted;
+        }
+        return new ArrayList<>();
+    }
+
+    // Пометить диапазон как просмотренный
+    public void markRangeAsWatched(int fromIndex, int toIndex) {
+        for (MediaContent media : catalog.subList(fromIndex, toIndex)) {
+            media.setCompleted(true);
+            media.setDateWatched(LocalDate.now());
+        }
+    }
 }
+
+
 
 
 
