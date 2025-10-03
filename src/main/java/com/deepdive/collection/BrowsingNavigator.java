@@ -49,15 +49,17 @@ public class BrowsingNavigator {
      * @param page новая страница для посещения
      */
     public void visit(MediaContent page) {
-        // TODO: Проверить что page != null
-        // TODO: Если currentPage != null:
-        //       - Добавить currentPage в backStack через push()
-        //       - Если backStack.size() > maxHistorySize, удалить самый старый через removeLast()
-        // TODO: Установить currentPage = page
-        // TODO: Очистить forwardStack (при новом переходе история "вперед" сбрасывается)
+        if (page != null) {
+            if (currentPage != null) {
+                backStack.push(currentPage);
+                if (backStack.size() > maxHistorySize) {
+                    backStack.removeLast();
+                }
 
-        // ПРИМЕЧАНИЕ: Так же работает браузер - при переходе на новую страницу
-        // кнопка "вперед" становится неактивной
+            }
+            currentPage = page;
+            forwardStack.clear();
+        }
     }
 
     /**
@@ -66,12 +68,12 @@ public class BrowsingNavigator {
      * @return предыдущая страница или null если истории нет
      */
     public MediaContent back() {
-        // TODO: Проверить что backStack не пуст
-        // TODO: Если пуст, вернуть currentPage (никуда не идем)
-        // TODO: Добавить currentPage в forwardStack через push()
-        // TODO: Извлечь из backStack через pop() и установить как currentPage
-        // TODO: Вернуть новую currentPage
-        return null; // заглушка
+        if (backStack.isEmpty()) {
+            return currentPage;
+        }
+        forwardStack.push(currentPage);
+        currentPage = backStack.pop();
+        return currentPage;
     }
 
     /**
@@ -80,12 +82,12 @@ public class BrowsingNavigator {
      * @return следующая страница или null если истории нет
      */
     public MediaContent forward() {
-        // TODO: Проверить что forwardStack не пуст
-        // TODO: Если пуст, вернуть currentPage (никуда не идем)
-        // TODO: Добавить currentPage в backStack через push()
-        // TODO: Извлечь из forwardStack через pop() и установить как currentPage
-        // TODO: Вернуть новую currentPage
-        return null; // заглушка
+        if (forwardStack.isEmpty()) {
+            return currentPage;
+        }
+        backStack.push(currentPage);
+        currentPage = forwardStack.pop();
+        return currentPage;
     }
 
     // === ПРОВЕРКИ ===
@@ -134,7 +136,7 @@ public class BrowsingNavigator {
      * @return количество страниц в истории назад
      */
     public int getBackHistorySize() {
-       return backStack.size();
+        return backStack.size();
     }
 
     /**
@@ -153,11 +155,13 @@ public class BrowsingNavigator {
      * @return список страниц
      */
     public List<MediaContent> getBackHistory(int count) {
-        // TODO: Создать результирующий список
-        // TODO: Использовать Iterator для backStack
-        // TODO: Добавить до count элементов
-        // TODO: Вернуть список
-        return new ArrayList<>(); // заглушка
+        List<MediaContent> result = new ArrayList<>();
+        Iterator<MediaContent> iterator = backStack.iterator();
+        for (int i = 0; i < count && iterator.hasNext(); i++) {
+            result.add(iterator.next());
+            
+        }
+        return result;
     }
 
     /**
@@ -167,8 +171,12 @@ public class BrowsingNavigator {
      * @return список страниц
      */
     public List<MediaContent> getForwardHistory(int count) {
-        // TODO: Аналогично getBackHistory но для forwardStack
-        return new ArrayList<>(); // заглушка
+        List<MediaContent> result = new ArrayList<>();
+        Iterator<MediaContent> iterator = forwardStack.iterator();
+        for (int i = 0; i < count && iterator.hasNext(); i++) {
+            result.add(iterator.next());
+        }
+        return result;
     }
 
     /**
