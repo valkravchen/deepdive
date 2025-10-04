@@ -2,23 +2,25 @@ package com.deepdive.util;
 
 import com.deepdive.model.MediaContent;
 import com.deepdive.model.enums.MediaType;
-import com.deepdive.collection.MediaCatalog;
+
 import java.util.*;
 
 /**
- * Утилитный класс для фильтрации и очистки каталога.
- *
+ * Утилитный класс для фильтрации и очистки списков контента.
+ * <p>
  * Реальное применение:
  * - Очистка устаревших данных
  * - Удаление дубликатов в базах
  * - Batch-обработка коллекций
  * - Data cleaning pipelines
- *
+ * <p>
  * Паттерн: Utility class (как Collections, Arrays, Objects)
- *
+ * - Работает с List<MediaContent> напрямую
+ * - Все методы static
+ * - Приватный конструктор
+ * <p>
  * ВАЖНО: Использует Iterator для безопасного удаления во время итерации.
- * Прямое удаление через catalog.remove() в цикле for-each вызовет
- * ConcurrentModificationException!
+ * Прямое удаление в цикле for-each вызовет ConcurrentModificationException!
  */
 public class ContentFilter {
 
@@ -31,13 +33,13 @@ public class ContentFilter {
 
     /**
      * Удаляет весь контент старше указанного года.
-     * @param catalog каталог для очистки
+     *
+     * @param items     список контента для очистки
      * @param olderThan год (контент ДО этого года будет удален)
      * @return количество удаленных элементов
      */
-    public static int removeOldContent(MediaCatalog catalog, int olderThan) {
+    public static int removeOldContent(List<MediaContent> items, int olderThan) {
         int removed = 0;
-        List<MediaContent> items = catalog.getAllMedia();
         Iterator<MediaContent> iterator = items.iterator();
         while (iterator.hasNext()) {
             MediaContent content = iterator.next();
@@ -46,113 +48,168 @@ public class ContentFilter {
                 removed++;
             }
         }
-        return removed;
-    }
-
-    /**
-     * Удаляет дубликаты - оставляет только первое вхождение каждого контента.
-     * @param catalog каталог для очистки
-     * @return количество удаленных дубликатов
-     */
-    public static int removeDuplicates(MediaCatalog catalog) {
-        // TODO: Создать Set<MediaContent> seen = new HashSet<>()
-        // TODO: Создать счетчик removed = 0
-        // TODO: Получить список и создать Iterator
-        // TODO: В цикле:
-        //       - Получить элемент
-        //       - Если !seen.add(element) (значит уже был):
-        //         - iter.remove()
-        //         - removed++
-        // TODO: Вернуть removed
-
-        // ПРИМЕЧАНИЕ: Set.add() возвращает false если элемент уже был.
-        // Используем это для определения дубликатов.
-
-        return 0; // заглушка
+        return removed; // заглушка
     }
 
     /**
      * Удаляет весь контент указанного типа.
-     * @param catalog каталог для очистки
-     * @param type тип контента для удаления
+     *
+     * @param items список для очистки
+     * @param type  тип контента для удаления
      * @return количество удаленных элементов
      */
-    public static int removeByType(MediaCatalog catalog, MediaType type) {
-        // TODO: Реализовать аналогично removeOldContent
-        // TODO: Условие: content.getType() == type
-        return 0; // заглушка
+    public static int removeByType(List<MediaContent> items, MediaType type) {
+        int removed = 0;
+        Iterator<MediaContent> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            MediaContent content = iterator.next();
+            if (content.getType() == type) {
+                iterator.remove();
+                removed++;
+            }
+        }
+        return removed; // заглушка
     }
 
     /**
      * Удаляет контент с рейтингом ниже указанного.
-     * @param catalog каталог
+     *
+     * @param items     список контента
      * @param minRating минимальный рейтинг (контент ниже будет удален)
      * @return количество удаленных
      */
-    public static int removeLowRated(MediaCatalog catalog, double minRating) {
-        // TODO: Условие: content.getRating() < minRating
-        // TODO: Учесть что контент может не иметь рейтинга (rating = 0.0)
-        return 0; // заглушка
+    public static int removeLowRated(List<MediaContent> items, double minRating) {
+        int removed = 0;
+        Iterator<MediaContent> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            MediaContent content = iterator.next();
+            if (content.getRating() != null && content.getRating().getStars() < minRating) {
+                iterator.remove();
+                removed++;
+            }
+        }
+        return removed; // заглушка
     }
 
     // === ФИЛЬТРАЦИЯ (БЕЗ УДАЛЕНИЯ) ===
 
     /**
      * Возвращает список контента определенного типа.
-     * @param catalog каталог
-     * @param type тип контента
+     *
+     * @param items исходный список
+     * @param type  тип контента
      * @return новый список с контентом указанного типа
      */
-    public static List<MediaContent> filterByType(MediaCatalog catalog, MediaType type) {
-        // TODO: Создать результирующий список
-        // TODO: Пройти по всем элементам каталога (можно for-each)
-        // TODO: Если тип совпадает, добавить в результат
-        // TODO: Вернуть результат
+    public static List<MediaContent> filterByType(List<MediaContent> items, MediaType type) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getType() == type) {
+                result.add(content);
+            }
+        }
+        return result;
+    }
 
-        // ПРИМЕЧАНИЕ: Здесь не нужен Iterator, т.к. мы не модифицируем каталог
+    /**
+     * Возвращает все видео (DOCUMENTARY + DOCUMENTARY_SERIES).
+     *
+     * @param items исходный список
+     * @return список всех видео
+     */
+    public static List<MediaContent> filterAllVideos(List<MediaContent> items) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            MediaType type = content.getType();
+            if (type == MediaType.DOCUMENTARY || type == MediaType.DOCUMENTARY_SERIES) {
+                result.add(content);
+            }
+        }
+        return result;
+    }
 
-        return new ArrayList<>(); // заглушка
+    /**
+     * Возвращает все книги (BOOK + AUDIOBOOK).
+     *
+     * @param items исходный список
+     * @return список всех книг
+     */
+    public static List<MediaContent> filterAllBooks(List<MediaContent> items) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            MediaType type = content.getType();
+            if (type == MediaType.BOOK || type == MediaType.AUDIOBOOK) {
+                result.add(content);
+            }
+        }
+        return result;
     }
 
     /**
      * Возвращает контент с рейтингом выше указанного.
-     * @param catalog каталог
+     *
+     * @param items     исходный список
      * @param minRating минимальный рейтинг
      * @return список контента с рейтингом >= minRating
      */
-    public static List<MediaContent> filterByRating(MediaCatalog catalog, double minRating) {
-        // TODO: Аналогично filterByType
-        // TODO: Условие: content.getRating() >= minRating
-        return new ArrayList<>(); // заглушка
+    public static List<MediaContent> filterByRating(List<MediaContent> items, double minRating) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getRating() != null && content.getRating().getStars() >= minRating) {
+                result.add(content);
+            }
+        }
+        return result;
     }
 
     /**
      * Возвращает контент из указанного диапазона лет.
-     * @param catalog каталог
+     *
+     * @param items    исходный список
      * @param fromYear начальный год (включительно)
-     * @param toYear конечный год (включительно)
+     * @param toYear   конечный год (включительно)
      * @return список контента из диапазона
      */
-    public static List<MediaContent> filterByYearRange(MediaCatalog catalog,
+    public static List<MediaContent> filterByYearRange(List<MediaContent> items,
                                                        int fromYear, int toYear) {
-        // TODO: Условие: content.getYear() >= fromYear && content.getYear() <= toYear
-        return new ArrayList<>(); // заглушка
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getYear() >= fromYear && content.getYear() <= toYear) {
+                result.add(content);
+            }
+        }
+        return result;
     }
 
     // === СТАТИСТИКА ===
 
     /**
      * Подсчитывает количество контента каждого типа.
-     * @param catalog каталог
+     *
+     * @param items список контента
      * @return строка с статистикой
      */
-    public static String getTypeStatistics(MediaCatalog catalog) {
-        // TODO: Создать счетчики для каждого типа (int books = 0, int videos = 0, ...)
-        // TODO: Пройти по каталогу и подсчитать
-        // TODO: Сформировать строку с результатами
-        // TODO: Вернуть строку
+    public static String getTypeStatistics(List<MediaContent> items) {
+        int documentaries = 0;
+        int series = 0;
+        int books = 0;
+        int audiobooks = 0;
+        for (MediaContent content : items) {
+            if (content.getType() == MediaType.DOCUMENTARY) {
+                documentaries++;
+            } else if (content.getType() == MediaType.DOCUMENTARY_SERIES) {
+                series++;
+            } else if (content.getType() == MediaType.BOOK) {
+                books++;
+            } else if (content.getType() == MediaType.AUDIOBOOK) {
+                audiobooks++;
+            }
+        }
 
-        return ""; // заглушка
+        return MediaType.AUDIOBOOK.getDescription() + ": " + audiobooks + "\n"
+                + MediaType.BOOK.getDescription() + ": " + books + "\n"
+                + MediaType.DOCUMENTARY.getDescription() + ": " + documentaries + "\n"
+                + MediaType.DOCUMENTARY_SERIES.getDescription() + ": " + series + "\n"
+                ;
     }
 
     /**

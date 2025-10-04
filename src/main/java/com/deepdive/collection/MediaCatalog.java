@@ -141,7 +141,7 @@ public class MediaCatalog {
 
     // Вспомогательные методы
     public int getTotalItems() {
-        return totalItems;
+        return catalog.size();
     }
 
     public List<MediaContent> getAllMedia() {
@@ -377,6 +377,10 @@ public class MediaCatalog {
             media.setCompleted(true);
             media.setDateWatched(LocalDate.now());
         }
+    }
+
+    public List<MediaContent> getItems() {
+        return catalog;  // возвращаем ссылку на внутренний список
     }
 }
 
