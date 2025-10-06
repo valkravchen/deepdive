@@ -6,6 +6,7 @@ target/
 ### IntelliJ IDEA ###
 .idea/
 TestProblem1.java
+TestProblem2.java
 *.iws
 *.iml
 *.ipr
