@@ -54,5 +54,15 @@ public abstract class MediaContent {
     public Set<Genre> getGenres() {
         return genres;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MediaContent that = (MediaContent) o;
+        return year == that.year &&
+                Objects.equals(title, that.title) &&
+                type == that.type;
+    }
 }
 
