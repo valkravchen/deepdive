@@ -4,6 +4,7 @@ import com.deepdive.model.MediaContent;
 import com.deepdive.model.enums.MediaType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MediaCatalog {
@@ -75,6 +76,19 @@ public class MediaCatalog {
             }
         }
         return result;
+    }
+
+    public int removeOldContent(int olderThan) {
+        int removed = 0;
+        Iterator<MediaContent> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            MediaContent item = iterator.next();
+            if (item.getYear() < olderThan) {
+                iterator.remove();
+                removed++;
+            }
+        }
+        return removed;
     }
 }
 
