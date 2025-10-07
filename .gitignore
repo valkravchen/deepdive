@@ -7,6 +7,7 @@ target/
 .idea/
 TestProblem1.java
 TestProblem2.java
+TestProblem3.java
 *.iws
 *.iml
 *.ipr
@@ -40,3 +41,4 @@ build/
 /.idea/misc.xml
 /.idea/vcs.xml
 /.idea/.gitignore
+/src/main/java/com/deepdive/test/TestProblem3.java
