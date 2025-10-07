@@ -1,6 +1,7 @@
 package com.deepdive.collection;
 
 import com.deepdive.model.MediaContent;
+import com.deepdive.model.enums.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,36 @@ public class MediaCatalog {
 
     public List<MediaContent> getAllMedia() {
         return items; // прямая ссылка?
+    }
+
+    public List<MediaContent> findByYear(int year) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getYear() == year) {
+                result.add(content);
+            }
+        }
+        return result;
+    }
+
+    public List<MediaContent> findByType(MediaType type) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getType() == type) {
+                result.add(content);
+            }
+        }
+        return result;
+    }
+
+    public List<MediaContent> findByTitle(String titlePart) {
+        List<MediaContent> result = new ArrayList<>();
+        for (MediaContent content : items) {
+            if (content.getTitle().toLowerCase().contains(titlePart.toLowerCase())) {
+                result.add(content);
+            }
+        }
+        return result;
     }
 }
 
