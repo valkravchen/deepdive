@@ -1,20 +1,30 @@
 package com.deepdive.model;
 
+import com.deepdive.model.enums.Genre;
 import com.deepdive.model.enums.MediaType;
 
-import java.util.UUID;
+import java.util.*;
 
 public abstract class MediaContent {
     private final String id;
     private String title;
     private int year;
     private MediaType type;
+    private Set<Genre> genres;
 
     public MediaContent(String title, int year, MediaType type) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.year = year;
         this.type = type;
+        this.genres = new HashSet<>();
+    }
+
+    public void addGenre(Genre genre) {
+        if (genre == null) {
+            return;
+        }
+        genres.add(genre);
     }
 
     public String getId() {
@@ -40,4 +50,9 @@ public abstract class MediaContent {
     public MediaType getType() {
         return type;
     }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
 }
+
