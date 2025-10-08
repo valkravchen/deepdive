@@ -1,7 +1,6 @@
 package com.deepdive.model;
 
-import com.deepdive.model.enums.Genre;
-import com.deepdive.model.enums.MediaType;
+import com.deepdive.model.enums.*;
 
 import java.util.*;
 

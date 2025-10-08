@@ -3,9 +3,7 @@ package com.deepdive.collection;
 import com.deepdive.model.MediaContent;
 import com.deepdive.model.enums.MediaType;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class MediaCatalog {
     private List<MediaContent> items;
@@ -16,12 +14,15 @@ public class MediaCatalog {
 
     public boolean addMedia(MediaContent media) {
         if (media == null) {
-            return false;
+            throw new IllegalArgumentException("media не может быть null");
         }
         return items.add(media);
     }
 
     public boolean removeMedia(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id не может быть null");
+        }
         for (MediaContent content : items) {
             if (content.getId().equals(id)) {
                 items.remove(content);
@@ -32,6 +33,9 @@ public class MediaCatalog {
     }
 
     public MediaContent findById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id не может быть null");
+        }
         for (MediaContent content : items) {
             if (content.getId().equals(id)) {
                 return content;
@@ -45,7 +49,7 @@ public class MediaCatalog {
     }
 
     public List<MediaContent> getAllMedia() {
-        return items; // прямая ссылка?
+        return new ArrayList<>(items);
     }
 
     public List<MediaContent> findByYear(int year) {
@@ -59,6 +63,9 @@ public class MediaCatalog {
     }
 
     public List<MediaContent> findByType(MediaType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("type не может быть null");
+        }
         List<MediaContent> result = new ArrayList<>();
         for (MediaContent content : items) {
             if (content.getType() == type) {
@@ -69,6 +76,9 @@ public class MediaCatalog {
     }
 
     public List<MediaContent> findByTitle(String titlePart) {
+        if (titlePart == null) {
+            throw new IllegalArgumentException("titlePart не может быть null");
+        }
         List<MediaContent> result = new ArrayList<>();
         for (MediaContent content : items) {
             if (content.getTitle().toLowerCase().contains(titlePart.toLowerCase())) {
@@ -89,6 +99,40 @@ public class MediaCatalog {
             }
         }
         return removed;
+    }
+
+    public MediaContent getByPosition(int index) {
+        if (index < 0 || index >= items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
+        }
+        return items.get(index);
+    }
+
+    public MediaContent replaceAt(int index, MediaContent newMedia) {
+        if (index < 0 || index >= items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
+        }
+        if (newMedia == null) {
+            throw new IllegalArgumentException("newMedia не может быть null");
+        }
+        return items.set(index, newMedia);
+    }
+
+    public void insertAt(int index, MediaContent media) {
+        if (index < 0 || index > items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
+        }
+        if (media == null) {
+            throw new IllegalArgumentException("media не может быть null");
+        }
+        items.add(index, media);
+    }
+
+    public MediaContent removeAt(int index) {
+        if (index < 0 || index >= items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
+        }
+        return items.remove(index);
     }
 }
 
