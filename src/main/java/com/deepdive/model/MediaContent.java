@@ -73,4 +73,3 @@ public abstract class MediaContent {
         return Objects.hash(title, year, type);
     }
 }
-

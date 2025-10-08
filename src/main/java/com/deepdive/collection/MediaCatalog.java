@@ -109,21 +109,23 @@ public class MediaCatalog {
     }
 
     public MediaContent replaceAt(int index, MediaContent newMedia) {
-        if (index < 0 || index >= items.size()) {
-            throw new IndexOutOfBoundsException("index вне допустимых границ");
-        }
         if (newMedia == null) {
             throw new IllegalArgumentException("newMedia не может быть null");
         }
+        if (index < 0 || index >= items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
+        }
+
         return items.set(index, newMedia);
     }
 
     public void insertAt(int index, MediaContent media) {
-        if (index < 0 || index > items.size()) {
-            throw new IndexOutOfBoundsException("index вне допустимых границ");
-        }
         if (media == null) {
             throw new IllegalArgumentException("media не может быть null");
+        }
+
+        if (index < 0 || index > items.size()) {
+            throw new IndexOutOfBoundsException("index вне допустимых границ");
         }
         items.add(index, media);
     }
