@@ -199,16 +199,6 @@ public class MediaCatalog {
         return (items.size() + pageSize - 1) / pageSize;
     }
 
-    // TODO: Создай метод replaceAllByTitle
-// - Принимает String oldTitle и MediaContent newMedia
-// - Возвращает int (количество замен)
-// - Найти ВСЕ элементы с названием oldTitle
-// - Заменить их на newMedia
-// - Вернуть количество замен
-//
-// Попробуй сначала через обычный for + set()
-// Потом попробуй найти способ сделать это через Iterator
-
     public int replaceAllByTitle(String oldTitle, MediaContent newMedia) {
         if (oldTitle == null) {
             throw new IllegalArgumentException("oldTitle не может быть null");
@@ -222,6 +212,22 @@ public class MediaCatalog {
             MediaContent mediaContent = iterator.next();
             if (mediaContent.getTitle().equalsIgnoreCase(oldTitle)) {
                 iterator.set(newMedia);
+                result++;
+            }
+        }
+        return result;
+    }
+
+    public int insertAfterBooks(MediaContent advert) {
+        if (advert == null) {
+            throw new IllegalArgumentException("advert не может быть null");
+        }
+        int result = 0;
+        ListIterator<MediaContent> iterator = items.listIterator();
+        while (iterator.hasNext()) {
+            MediaContent mediaContent = iterator.next();
+            if (mediaContent.getType() == MediaType.BOOK) {
+                iterator.add(advert);
                 result++;
             }
         }
