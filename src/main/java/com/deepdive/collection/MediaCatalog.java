@@ -168,5 +168,35 @@ public class MediaCatalog {
         }
         return -1;
     }
+
+
+    public List<MediaContent> getPage(int pageNumber, int pageSize) {
+        if (pageNumber < 0) {
+            throw new IllegalArgumentException("pageNumber не может быть отрицательным");
+        }
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("pageSize должен быть > 0");
+        }
+
+        int fromIndex = pageNumber * pageSize;
+
+        if (fromIndex >= items.size()) {
+            return new ArrayList<>();  // Пустая страница
+        }
+
+        int toIndex = Math.min(fromIndex + pageSize, items.size());
+
+        return new ArrayList<>(items.subList(fromIndex, toIndex));
+    }
+
+    public int getTotalPages(int pageSize) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("pageSize должен быть > 0");
+        }
+        if (items.isEmpty()) {
+            return 0;
+        }
+        return (items.size() + pageSize - 1) / pageSize;
+    }
 }
 
