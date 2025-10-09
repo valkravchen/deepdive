@@ -233,5 +233,28 @@ public class MediaCatalog {
         }
         return result;
     }
+
+    public void moveUp(int index) {
+        if (index < 1 || index >= items.size()) {
+            throw new IllegalArgumentException("index должен быть > 0 и < items.size");
+        }
+        MediaContent mediaContent1 = items.get(index - 1);
+        MediaContent mediaContent2 = items.get(index);
+        items.set(index - 1, mediaContent2);
+        items.set(index, mediaContent1);
+    }
+
+    public void swap(int index1, int index2) {
+        if (index1 < 0 || index1 >= items.size()) {
+            throw new IllegalArgumentException("index1 должен быть >= 0 и < items.size");
+        }
+        if (index2 < 0 || index2 >= items.size()) {
+            throw new IllegalArgumentException("index2 должен быть >= 0 и < items.size");
+        }
+        MediaContent mediaContent1 = items.get(index1);
+        MediaContent mediaContent2 = items.get(index2);
+        items.set(index1, mediaContent2);
+        items.set(index2, mediaContent1);
+    }
 }
 
