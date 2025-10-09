@@ -136,5 +136,37 @@ public class MediaCatalog {
         }
         return items.remove(index);
     }
+
+
+    public int getPosition(MediaContent media) {
+        if (media == null) {
+            throw new IllegalArgumentException("media не может быть null");
+        }
+        return items.indexOf(media);
+    }
+
+    public int getPositionByTitle(String title) {
+        if (title == null) {
+            throw new IllegalArgumentException("title не может быть null");
+        }
+        for (int index = 0; index < items.size(); index++) {
+            if (items.get(index).getTitle().equalsIgnoreCase(title)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    public int getLastPositionByTitle(String title) {
+        if (title == null) {
+            throw new IllegalArgumentException("title не может быть null");
+        }
+        for (int index = items.size() - 1; index > -1; index--) {
+            if (items.get(index).getTitle().equalsIgnoreCase(title)) {
+                return index;
+            }
+        }
+        return -1;
+    }
 }
 
