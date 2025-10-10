@@ -2,8 +2,9 @@ package com.deepdive.queue;
 
 import com.deepdive.model.Video;
 
+import java.util.*;
 import java.util.LinkedList;
-import java.util.Queue;
+
 
 public class WatchQueue {
     private Queue<Video> queue;
