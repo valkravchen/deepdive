@@ -10,6 +10,7 @@ public abstract class MediaContent {
     private int year;
     private MediaType type;
     private Set<Genre> genres;
+    private boolean completed;
 
     public MediaContent(String title, int year, MediaType type) {
         this.id = UUID.randomUUID().toString();
@@ -17,6 +18,7 @@ public abstract class MediaContent {
         this.year = year;
         this.type = type;
         this.genres = new HashSet<>();
+        this.completed = false;
     }
 
     public void addGenre(Genre genre) {
@@ -52,6 +54,14 @@ public abstract class MediaContent {
 
     public Set<Genre> getGenres() {
         return genres;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     @Override
