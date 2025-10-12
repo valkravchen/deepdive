@@ -11,6 +11,7 @@ public abstract class MediaContent {
     private MediaType type;
     private Set<Genre> genres;
     private boolean completed;
+    private Set<String> tags;
 
     public MediaContent(String title, int year, MediaType type) {
         this.id = UUID.randomUUID().toString();
@@ -19,6 +20,7 @@ public abstract class MediaContent {
         this.type = type;
         this.genres = new HashSet<>();
         this.completed = false;
+        this.tags = new HashSet<>();
     }
 
     public void addGenre(Genre genre) {
@@ -81,5 +83,34 @@ public abstract class MediaContent {
     @Override
     public int hashCode() {
         return Objects.hash(title, year, type);
+    }
+
+    public boolean addTag(String tag) {
+        if (tag == null || tag.trim().isEmpty()) {
+            return false;
+        }
+        return tags.add(tag.trim().toLowerCase());
+    }
+
+    public boolean removeTag(String tag) {
+        if (tag == null) {
+            return false;
+        }
+        return tags.remove(tag.trim().toLowerCase());
+    }
+
+    public Set<String> getTags() {
+        return new HashSet<>(tags);
+    }
+
+    public boolean hasTag(String tag) {
+        if (tag == null) {
+            return false;
+        }
+        return tags.contains(tag.trim().toLowerCase());
+    }
+
+    public int getTagCount() {
+        return tags.size();
     }
 }
