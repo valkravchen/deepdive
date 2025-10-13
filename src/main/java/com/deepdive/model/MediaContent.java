@@ -4,7 +4,7 @@ import com.deepdive.model.enums.*;
 
 import java.util.*;
 
-public abstract class MediaContent {
+public abstract class MediaContent implements Comparable<MediaContent> {
     private final String id;
     private String title;
     private int year;
@@ -12,6 +12,7 @@ public abstract class MediaContent {
     private Set<Genre> genres;
     private boolean completed;
     private Set<String> tags;
+    private double rating;
 
     public MediaContent(String title, int year, MediaType type) {
         this.id = UUID.randomUUID().toString();
@@ -21,6 +22,7 @@ public abstract class MediaContent {
         this.genres = new HashSet<>();
         this.completed = false;
         this.tags = new HashSet<>();
+        this.rating = 0.0;
     }
 
     public void addGenre(Genre genre) {
@@ -64,6 +66,20 @@ public abstract class MediaContent {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = validateRating(rating);
+    }
+
+    private static double validateRating(double value) {
+        if (value < 0) return 0;
+        if (value > 10) return 10;
+        return value;
     }
 
     @Override
@@ -113,4 +129,21 @@ public abstract class MediaContent {
     public int getTagCount() {
         return tags.size();
     }
+
+    @Override
+    public int compareTo(MediaContent other) {
+        return 0;
+    }
+
+    // TODO: Добавь поле для рейтинга
+// - private double rating (от 0.0 до 10.0)
+
+
+// TODO: Реализуй интерфейс Comparable<MediaContent>
+// - Добавь implements Comparable<MediaContent> к классу
+// - Реализуй метод compareTo(MediaContent other)
+// - Сравнение по рейтингу (УБЫВАЮЩИЙ порядок):
+//   * this.rating > other.rating → отрицательное число
+//   * this.rating < other.rating → положительное число
+//   * this.rating == other.rating → сравнить по title
 }
