@@ -132,18 +132,13 @@ public abstract class MediaContent implements Comparable<MediaContent> {
 
     @Override
     public int compareTo(MediaContent other) {
-        return 0;
+        int ratingCompare = Double.compare(other.rating, this.rating);
+        if (ratingCompare == 0) {
+            if (this.title == null && other.title == null) return 0;
+            if (this.title == null) return 1;
+            if (other.title == null) return -1;
+            return this.title.compareTo(other.title);
+        }
+        return ratingCompare;
     }
-
-    // TODO: Добавь поле для рейтинга
-// - private double rating (от 0.0 до 10.0)
-
-
-// TODO: Реализуй интерфейс Comparable<MediaContent>
-// - Добавь implements Comparable<MediaContent> к классу
-// - Реализуй метод compareTo(MediaContent other)
-// - Сравнение по рейтингу (УБЫВАЮЩИЙ порядок):
-//   * this.rating > other.rating → отрицательное число
-//   * this.rating < other.rating → положительное число
-//   * this.rating == other.rating → сравнить по title
 }
