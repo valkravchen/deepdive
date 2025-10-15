@@ -21,7 +21,8 @@ public class YearNavigator {
             @Override
             public int compare(MediaContent o1, MediaContent o2) {
                 int yearCompare = Integer.compare(o1.getYear(), o2.getYear());
-                if (yearCompare == 0 && !o1.getTitle().isEmpty() && o2.getTitle().isEmpty()) {
+                if (yearCompare == 0 && !o1.getTitle().isEmpty() && !o2.getTitle().isEmpty()) {
+
                     return o1.getTitle().compareTo(o2.getTitle());
                 }
                 return yearCompare;
@@ -31,30 +32,27 @@ public class YearNavigator {
         contentByYear.addAll(catalog.getAllMedia());
     }
 
-
-    // TODO: Создай метод getContentBetweenYears
-    // - Принимает fromYear (включительно) и toYear (не включительно)
-    // - Возвращает NavigableSet<MediaContent>
-    // - Создай фиктивные объекты для границ
-    // - Использует subSet с фиктивными объектами
-
+    public NavigableSet<MediaContent> getContentBetweenYears(int fromYear, int toYear) {
+        MediaContent fromDummy = new DummyContent(fromYear);
+        MediaContent toDummy = new DummyContent(toYear);
+        return contentByYear.subSet(fromDummy, true, toDummy, false);
+    }
 
     public NavigableSet<MediaContent> getContentBefore(int year) {
+        MediaContent dummy = new DummyContent(year);
+        return contentByYear.headSet(dummy, false);
+    }
+
+    public NavigableSet<MediaContent> getContentAfter(int year) {
         MediaContent dummy = new DummyContent(year);
         return contentByYear.tailSet(dummy, true);
     }
 
-    // TODO: Создай метод getContentAfter
-    // - Принимает year (включительно)
-    // - Возвращает NavigableSet<MediaContent>
-    // - Создай фиктивный объект для границы
-    // - Использует tailSet
-
-
-    // TODO: Создай метод getYearRange
-    // - Возвращает String "минГод - максГод"
-    // - Использует first() и last()
-    // - Проверяет что коллекция не пустая
-
+    public String getYearRange() {
+        if (contentByYear.isEmpty()) {
+            return "Нет контента";
+        }
+        return contentByYear.first().getYear() +  " - " + contentByYear.last().getYear();
+    }
 }
 
