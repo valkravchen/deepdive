@@ -22,7 +22,6 @@ public class YearNavigator {
             public int compare(MediaContent o1, MediaContent o2) {
                 int yearCompare = Integer.compare(o1.getYear(), o2.getYear());
                 if (yearCompare == 0 && !o1.getTitle().isEmpty() && !o2.getTitle().isEmpty()) {
-
                     return o1.getTitle().compareTo(o2.getTitle());
                 }
                 return yearCompare;

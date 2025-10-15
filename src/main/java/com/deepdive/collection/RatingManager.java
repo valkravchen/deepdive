@@ -2,11 +2,8 @@ package com.deepdive.collection;
 
 import com.deepdive.model.MediaContent;
 import com.deepdive.model.enums.MediaType;
-
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class RatingManager {
     private MediaCatalog catalog;
@@ -23,7 +20,7 @@ public class RatingManager {
         sorted.addAll(catalog.getAllMedia());
         Set<MediaContent> result = new LinkedHashSet<>();
         int count = 0;
-        for (MediaContent content: sorted) {
+        for (MediaContent content : sorted) {
             if (count >= limit) break;
             result.add(content);
             count++;
@@ -43,7 +40,7 @@ public class RatingManager {
         }
         Set<MediaContent> result = new LinkedHashSet<>();
         int count = 0;
-        for (MediaContent content: sorted) {
+        for (MediaContent content : sorted) {
             if (count >= limit) break;
             result.add(content);
             count++;
