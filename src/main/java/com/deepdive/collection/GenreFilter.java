@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class GenreFilter {
-    public EnumSet<Genre> selectedGenres = EnumSet.noneOf(Genre.class);
+    private EnumSet<Genre> selectedGenres = EnumSet.noneOf(Genre.class);
 
     public boolean addGenre(Genre genre) {
         if (genre == null) {
@@ -38,32 +38,36 @@ public class GenreFilter {
     }
 
     public void selectAll() {
-        EnumSet.allOf(Genre.class);
+        selectedGenres = EnumSet.allOf(Genre.class);
     }
-
-    // TODO: Создай метод union (объединение)
-    // - Принимает GenreFilter other
-    // - Возвращает GenreFilter с объединением жанров
-    // - Создай новый фильтр, добавь жанры из обоих
 
     public GenreFilter union(GenreFilter other) {
-        EnumSet<Genre> union = EnumSet.copyOf(selectedGenres);
-
-        union.addAll(other.getSelectedGenres());
+        if (other == null) {
+            throw new IllegalArgumentException("other не может быть null");
+        }
+        GenreFilter result = new GenreFilter();
+        result.selectedGenres.addAll(this.selectedGenres);
+        result.selectedGenres.addAll(other.selectedGenres);
+        return result;
     }
-}
 
-// TODO: Создай метод intersect (пересечение)
-// - Принимает GenreFilter other
-// - Возвращает GenreFilter с общими жанрами
-// - Используй retainAll для пересечения
+    public GenreFilter intersect(GenreFilter other) {
+        if (other == null) {
+            throw new IllegalArgumentException("other не может быть null");
+        }
+        GenreFilter result = new GenreFilter();
+        result.selectedGenres.addAll(this.selectedGenres);
+        result.selectedGenres.retainAll(other.selectedGenres);
+        return result;
+    }
 
+    public GenreFilter complement() {
+        GenreFilter result = new GenreFilter();
+        result.selectedGenres = EnumSet.complementOf(this.selectedGenres);
+        return result;
+    }
 
-// TODO: Создай метод complement (дополнение)
-// - Возвращает GenreFilter с НЕвыбранными жанрами
-// - Используй EnumSet.complementOf()
-//    public GenreFilter complement() {
-//
-//    }
-
+    public int size() {
+        return selectedGenres.size();
+    }
 }
