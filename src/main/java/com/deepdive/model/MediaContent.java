@@ -19,7 +19,7 @@ public abstract class MediaContent implements Comparable<MediaContent> {
         this.title = title;
         this.year = year;
         this.type = type;
-        this.genres = new HashSet<>();
+        this.genres = EnumSet.noneOf(Genre.class);
         this.completed = false;
         this.tags = new HashSet<>();
         this.rating = 0.0;

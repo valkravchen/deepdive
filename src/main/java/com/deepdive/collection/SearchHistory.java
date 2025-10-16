@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public class SearchHistory {
-    private Set<String> searchHistory = new LinkedHashSet<>();
+    private Set<String> searchHistory = new LinkedHashSet<String>();
 
     public boolean addSearch(String query) {
         if (query == null || query.trim().isEmpty()) {
