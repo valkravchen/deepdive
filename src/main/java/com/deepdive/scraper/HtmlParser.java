@@ -55,7 +55,7 @@ public class HtmlParser {
      * @param url адрес страницы
      * @return Document объект или null при ошибке
      */
-    private Document loadDocument(String url) {
+    public Document loadDocument(String url) {
         try {
             return Jsoup.connect(url).timeout(DEFAULT_TIMEOUT).get();
         } catch (IOException e) {
