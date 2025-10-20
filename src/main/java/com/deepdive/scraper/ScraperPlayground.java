@@ -13,7 +13,7 @@ public class ScraperPlayground {
         String url = "https://books.toscrape.com";
         Document document = parser.loadDocument(url);
 //        String body = document.body().select("h3").first().text();
-        System.out.println(document.body().select(""));
+        System.out.println(document.body().select("h3 a"));
 
        }
     }

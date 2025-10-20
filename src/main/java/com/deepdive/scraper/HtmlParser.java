@@ -3,6 +3,7 @@ package com.deepdive.scraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.*;
@@ -71,8 +72,15 @@ public class HtmlParser {
      * @return текст первого элемента или null если не найден или ошибка
      */
     public String extractText(String url, String cssSelector) {
-        // TODO: реализовать
-        return null;
+        Document document = loadDocument(url);
+        if (document == null) {
+            return null;
+        }
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return null;
+        }
+        return elements.first().text();
     }
 
     /**
