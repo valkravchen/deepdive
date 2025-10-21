@@ -140,4 +140,73 @@ public class HtmlParser {
         Elements elements = document.select(cssSelector);
         return !elements.isEmpty();
     }
+
+    /**
+     * Извлекает значение атрибута из первого найденного элемента.
+     *
+     * @param url адрес страницы
+     * @param cssSelector CSS селектор
+     * @param attributeName имя атрибута (например: "href", "src", "class")
+     * @return значение атрибута, пустая строка если атрибут не найден,
+     *         или null при ошибке соединения
+     */
+    public String extractAttribute(String url, String cssSelector, String attributeName) {
+        Document document = loadDocument(url);
+        if (document == null) {
+            return null;
+        }
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return "";
+        }
+        return elements.first().attr(attributeName);
+    }
+
+    /**
+     * Извлекает значения атрибута из всех найденных элементов.
+     *
+     * @param url адрес страницы
+     * @param cssSelector CSS селектор
+     * @param attributeName имя атрибута
+     * @return список значений атрибутов (пустой список если не найдено)
+     */
+    public List<String> extractAllAttributes(String url, String cssSelector, String attributeName) {
+        List<String> result =new ArrayList<>();
+        Document document = loadDocument(url);
+        if (document == null) {
+            return result;
+        }
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return result;
+        }
+        for (Element element : elements) {
+            result.add(element.attr(attributeName));
+        }
+        return result;
+    }
+
+    /**
+     * Извлекает абсолютные URL из ссылок (href атрибутов).
+     * Автоматически преобразует относительные URL в абсолютные.
+     *
+     * @param url адрес страницы
+     * @param cssSelector CSS селектор для ссылок (обычно "a" или с классом)
+     * @return список абсолютных URL (пустой список если не найдено)
+     */
+    public List<String> extractLinks(String url, String cssSelector) {
+        List<String> result =new ArrayList<>();
+        Document document = loadDocument(url);
+        if (document == null) {
+            return result;
+        }
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return result;
+        }
+        for (Element element : elements) {
+            result.add(element.absUrl("href"));
+        }
+        return result;
+    }
 }

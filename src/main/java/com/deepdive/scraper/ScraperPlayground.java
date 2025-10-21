@@ -1,5 +1,7 @@
 package com.deepdive.scraper;
 
+import org.jsoup.nodes.Document;
+
 import java.util.List;
 
 /**
@@ -10,17 +12,10 @@ public class ScraperPlayground {
 
     public static void main(String[] args) {
         HtmlParser parser = new HtmlParser();
+        String url = "https://books.toscrape.com";
+        Document document = parser.loadDocument(url);
+        System.out.println(document.select("article"));
 
-        System.out.println("=== Jsoup Песочница ===\n");
-
-        // Эксперимент 1: Базовые методы (Шаг 2)
-        experimentBasicMethods(parser);
-
-        // Эксперимент 2: CSS селекторы (Шаг 3)
-        experimentCssSelectors(parser);
-
-        // Эксперимент 3: Твои эксперименты
-        yourExperiments(parser);
     }
 
     private static void experimentBasicMethods(HtmlParser parser) {
