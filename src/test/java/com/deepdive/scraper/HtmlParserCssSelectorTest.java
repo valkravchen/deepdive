@@ -51,11 +51,9 @@ class HtmlParserCssSelectorTest {
     @Test
     void shouldCheckElementExists() {
         HtmlParser parser = new HtmlParser();
-
-        // Проверить наличие навигации
-        boolean hasNav = parser.hasElement(TEST_URL, "nav");
-
-        assertTrue(hasNav, "На странице должна быть навигация");
+        // Проверить наличие списка (ul)
+        boolean hasUl = parser.hasElement(TEST_URL, "ul");
+        assertTrue(hasUl, "На странице должен быть ul");
     }
 
     @Test

@@ -92,14 +92,18 @@ public class HtmlParser {
      */
     public List<String> extractAllText(String url, String cssSelector) {
         List<String> result = new ArrayList<>();
-        if (!loadDocument(url).select(cssSelector).isEmpty()) {
-            for (Element element : loadDocument(url).select(cssSelector)) {
-                result.add(element.text());
-            }
+        Document document = loadDocument(url);
+        if (document == null) {
+            return result;
         }
-
-        // TODO: реализовать
-        return new ArrayList<>();
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return result;
+        }
+        for (Element element : elements) {
+            result.add(element.text());
+        }
+        return result;
     }
 
     /**
@@ -110,8 +114,15 @@ public class HtmlParser {
      * @return количество найденных элементов (0 если не найдено или ошибка)
      */
     public int countElements(String url, String cssSelector) {
-        // TODO: реализовать
-        return 0;
+        Document document = loadDocument(url);
+        if (document == null) {
+            return 0;
+        }
+        Elements elements = document.select(cssSelector);
+        if (elements.isEmpty()) {
+            return 0;
+        }
+        return elements.size();
     }
 
     /**
@@ -122,7 +133,11 @@ public class HtmlParser {
      * @return true если элемент найден, false если не найден или ошибка
      */
     public boolean hasElement(String url, String cssSelector) {
-        // TODO: реализовать
-        return false;
+        Document document = loadDocument(url);
+        if (document == null) {
+            return false;
+        }
+        Elements elements = document.select(cssSelector);
+        return !elements.isEmpty();
     }
 }
