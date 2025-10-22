@@ -209,4 +209,26 @@ public class HtmlParser {
         }
         return result;
     }
+
+    /**
+     * Извлекает URL всех изображений на странице.
+     *
+     * @param url адрес страницы
+     * @return список URL изображений (пустой список если не найдено)
+     */
+    public List<String> extractImages(String url) {
+        return extractAllAttributes(url, "img", "src");
+    }
+
+    /**
+     * Извлекает абсолютные URL всех изображений на странице.
+     * Автоматически преобразует относительные URL в абсолютные.
+     *
+     * @param url адрес страницы
+     * @return список абсолютных URL изображений (пустой список если не найдено)
+     */
+    public List<String> extractAbsoluteImages(String url) {
+        // TODO: реализовать
+        return new ArrayList<>();
+    }
 }

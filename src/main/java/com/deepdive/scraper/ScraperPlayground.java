@@ -1,6 +1,9 @@
 package com.deepdive.scraper;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
 
 import java.util.List;
 
@@ -9,66 +12,43 @@ import java.util.List;
  * Здесь можно безопасно пробовать разные URL, селекторы, методы.
  */
 public class ScraperPlayground {
-
     public static void main(String[] args) {
-        HtmlParser parser = new HtmlParser();
-        String url = "https://books.toscrape.com";
-        Document document = parser.loadDocument(url);
-        System.out.println(document.select("article"));
+        try {
+            Document document = Jsoup.connect("https://books.toscrape.com/").get();
+            String title = document.title();
+            System.out.println("Заголовок страницы: " + title);
+            Element h1 = document.selectFirst("h1");
+            System.out.println(h1);
+            System.out.println("Текст h1: " + h1.text());
+            System.out.println("Имя тега: " + h1.tagName());
+            Elements allH3 = document.select("h3");
+            System.out.println("Найдено заголовков h3: " + allH3.size());
+            Elements products = document.select(".product_pod");
+            Element firstProduct = products.first();
+//            for (Element element: products) {
+//                System.out.println(element.text());
+//            }
+            System.out.println();
+            String html = firstProduct.html();
+            Elements allLinks = document.select("a");
+//            System.out.println(allLinks);
+            System.out.println("Всего ссылок на странице: " + allLinks.size());
+            Elements bookLinks = document.select("h3 a");
+            System.out.println("Ссылок на книги: " + bookLinks.size());
+            System.out.println("\nПервые 3 ссылки на книги:");
+            for (int i = 0; i < 3 && i < bookLinks.size(); i++) {
+                Element link = bookLinks.get(i);
+                String href = link.attr("href");
+                String titleAttr = link.attr("title");
+                System.out.println((i + 1) + ". " + titleAttr);
+                System.out.println("   URL: " + href);
+                Elements prices = document.select("p.price_color");
+                System.out.println("Найдено цен: " + prices.size());
+                System.out.println(prices);
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка: " + e.getMessage());
 
-    }
-
-    private static void experimentBasicMethods(HtmlParser parser) {
-        System.out.println("--- Базовые методы (Шаг 2) ---");
-        String url = "https://books.toscrape.com";
-
-        String title = parser.getPageTitle(url);
-        System.out.println("Заголовок: " + title);
-
-        String body = parser.getBodyText(url);
-        System.out.println("Body (первые 150 символов): " +
-                body.substring(0, Math.min(150, body.length())) + "...");
-        System.out.println();
-    }
-
-    private static void experimentCssSelectors(HtmlParser parser) {
-        System.out.println("--- CSS селекторы (Шаг 3) ---");
-        String url = "https://books.toscrape.com";
-
-        // После реализации методов раскомментируй:
-
-        // Первая книга
-        String firstBook = parser.extractText(url, "h3 a");
-        System.out.println("Первая книга: " + firstBook);
-
-        // Все книги
-         List<String> allBooks = parser.extractAllText(url, "h3 a");
-         System.out.println("Всего книг: " + allBooks.size());
-         System.out.println("Первые 5:");
-         for (int i = 0; i < Math.min(5, allBooks.size()); i++) {
-             System.out.println((i + 1) + ". " + allBooks.get(i));
-         }
-
-        // Количество карточек
-         int count = parser.countElements(url, "article.product_pod");
-         System.out.println("\nКоличество карточек книг: " + count);
-
-        // Проверка элементов
-         System.out.println("Есть навигация? " + parser.hasElement(url, "nav"));
-         System.out.println("Есть поиск? " + parser.hasElement(url, "#search"));
-
-        System.out.println("(Раскомментируй код после реализации методов)");
-        System.out.println();
-    }
-
-    private static void yourExperiments(HtmlParser parser) {
-        System.out.println("--- Твои эксперименты ---");
-
-        // Здесь добавляй свои эксперименты:
-        // - Разные селекторы
-        // - Другие сайты (quotes.toscrape.com, Wikipedia)
-        // - Комбинации методов
-
-        System.out.println("Место для твоих экспериментов!");
+        }
     }
 }

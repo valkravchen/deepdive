@@ -1,14 +1,16 @@
 package com.deepdive.scraper;
 
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Тесты для извлечения данных через CSS селекторы.
- *
+ * <p>
  * ЗАДАЧА: Расширить класс HtmlParser методами для работы с CSS селекторами.
- *
+ * <p>
  * Тестовый сайт: https://books.toscrape.com - учебный магазин книг
  */
 class HtmlParserCssSelectorTest {
@@ -95,5 +97,22 @@ class HtmlParserCssSelectorTest {
         String text = parser.extractText(invalidUrl, "p");
 
         assertNull(text, "При ошибке соединения должен вернуть null");
+    }
+
+    @Test
+    void shouldExtractImages() {
+        HtmlParser parser = new HtmlParser();
+        String url = "https://books.toscrape.com";
+
+        List<String> images = parser.extractImages(url);
+
+        assertNotNull(images);
+        assertFalse(images.isEmpty());
+        assertTrue(images.size() >= 20, "Должно быть минимум 20 обложек");
+
+        // Все должны иметь расширение изображения
+        for (String img : images) {
+            assertTrue(img.contains(".jpg") || img.contains(".png") || img.contains(".gif"));
+        }
     }
 }
