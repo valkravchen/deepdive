@@ -76,6 +76,7 @@ public class HtmlParser {
         if (document == null) {
             return null;
         }
+
         Elements elements = document.select(cssSelector);
         if (elements.isEmpty()) {
             return null;
